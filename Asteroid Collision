@@ -1,0 +1,119 @@
+Asteroid Collision
+You are given an array asteroids representing integers in a row.
+
+The absolute value of asteroids[i] represents the weight of the ith asteroid and its sign represents the direction in which it is moving.
+
+Find the final state of the asteroids after collision, assuming the following things:
+
+If two asteroids of different sizes meet, the smaller one explodes
+If two asteroids of same sizes meet, both of them explodes
+Two asteroids moving in the same direction never meet
+Note : if there is no asteroid left , then print -1 .
+
+Input Format
+First line contains an integer n, representing the size of array asteroids
+
+Second line consists of n spaced integers
+
+Output Format
+Print the final array of the states of all the asteroids after collision (it may be of less size than the original array)
+
+Example 1
+Input
+
+3
+5 10 -5
+Output
+
+5 10
+Explanation
+
+The 10 and -5 collide resulting in 10. The 5 and 10 never collide.
+
+Example 2
+Input
+
+2
+8 -8
+Output
+
+Explanation
+
+The 8 and -8 collide exploding each other.
+
+Constraints
+2 <= asteroids.length <= 10^4
+
+-1000 <= asteroids[i] <= 1000
+
+asteroids[i] != 0
+
+Topics
+Deques
+Stacks
+Arrays
+Companies
+DE Shaw
+
+
+
+import java.util.*;
+
+public class Main {
+    // TC: O(N), SC: O(N)
+    public static List<Integer> asteroidCollision(int[] asteroids) {
+        Stack<Integer> st = new Stack<>();
+
+        for (int i = 0; i < asteroids.length; i++) {
+            int asteroid = asteroids[i];
+
+            if (asteroid > 0) {
+                st.push(asteroid);
+            } else {
+                while (st.size() > 0 && st.peek() > 0 && st.peek() < Math.abs(asteroid)) {
+                    st.pop();
+                }
+
+                if (st.size() > 0 && st.peek() > 0 && st.peek() > Math.abs(asteroid)) {
+                    // nothing will be added
+                    continue;
+                } else if (st.size() > 0 && st.peek() > 0 && st.peek() == Math.abs(asteroid)) {
+                    st.pop();
+                } else {
+                    // no one in stack or all asteroids are moving towards left
+                    st.push(asteroid);
+                }
+            }
+        }
+
+        ArrayList<Integer> ans = new ArrayList<>();
+        while (st.size() != 0) {
+            ans.add(st.pop());
+        }
+
+        Collections.reverse(ans);
+
+        return ans;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt();
+
+        int[] asteroids = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            asteroids[i] = scanner.nextInt();
+        }
+
+        List<Integer> ans = asteroidCollision(asteroids);
+
+        if (ans.size() == 0) {
+            System.out.print(-1);
+        } else {
+            for (int asteroid : ans) {
+                System.out.print(asteroid + " ");
+            }
+        }
+    }
+}
