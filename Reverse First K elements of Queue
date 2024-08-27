@@ -1,0 +1,69 @@
+Reverse First K elements of Queue
+Given an integer K and a queue of integers with N elements, your task is to reverse the order of the first K elements of the queue, leaving the other elements in the same relative order.
+
+Input Format
+The first line of input contains two integers N and K, the next line contains N space-separated integers depicting values in queue.
+
+Output Format
+You need to print the modified Queue.
+
+Example 1
+Input:
+
+5 3
+1 2 3 4 5
+Output:
+
+3 2 1 4 5
+Explanation:
+
+1 2 3 are first K elements. Thus after reversing them, the final list is 3 2 1 4 5.
+
+Constraints
+1 <= K <= N <=10000
+1 <= elements <=10000
+Topics
+Stacks
+Queues
+Companies
+Amdocs
+
+
+import java.util.*;
+import java.io.*;
+
+public class Main {
+    public static void main(String args[]) {
+        Scanner input = new Scanner(System.in);
+        int n = input.nextInt();
+        int k = input.nextInt();
+        
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < n; i++) {
+            q.add(input.nextInt());
+        }
+
+   
+        Stack<Integer> stack = new Stack<>();
+        
+
+        for (int i = 0; i < k; i++) {
+            stack.push(q.poll());
+        }
+        
+
+        while (!stack.isEmpty()) {
+            q.add(stack.pop());
+        }
+        
+
+        for (int i = 0; i < n - k; i++) {
+            q.add(q.poll());
+        }
+        
+        // Print the final queue
+        while (!q.isEmpty()) {
+            System.out.print(q.poll() + " ");
+        }
+    }
+}
